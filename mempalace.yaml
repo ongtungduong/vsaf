@@ -1,0 +1,35 @@
+wing: vsaf
+rooms:
+- name: openspec
+  description: Files from openspec/
+  keywords:
+  - openspec
+  - openspec
+- name: documentation
+  description: Files from docs/
+  keywords:
+  - documentation
+  - docs
+- name: scripts
+  description: Files from scripts/
+  keywords:
+  - scripts
+  - scripts
+- name: graphify_out
+  description: Files from graphify-out/
+  keywords:
+  - graphify_out
+  - graphify-out
+- name: githooks
+  description: Files from githooks/
+  keywords:
+  - githooks
+  - githooks
+- name: planning
+  description: Files from specs/
+  keywords:
+  - planning
+  - specs
+- name: general
+  description: Files that don't fit other rooms
+  keywords: []

@@ -1,0 +1,41 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write|Create|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "FILE=\"$TOOL_INPUT_FILE\"; if [ -n \"$FILE\" ]; then if echo \"$FILE\" | grep -qE '\\.env$|\\.env\\.|\\.pem$|\\.key$|id_rsa|id_ed25519|\\.claude/settings\\.json'; then echo 'BLOCK: Protected file. Manual edit required for secrets/config files.'; exit 2; fi; fi"
+          }
+        ],
+        "description": "ECC: Block writes to secrets and protected config files (.env, .pem, .key, settings.json)"
+      },
+      {
+        "matcher": "Edit|Write|Create|Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "INPUT=\"$TOOL_INPUT\"; if [ -n \"$INPUT\" ]; then if echo \"$INPUT\" | grep -qE 'AKIA[0-9A-Z]{16}|ASIA[0-9A-Z]{16}|ghp_[a-zA-Z0-9]{36}|sk-[a-zA-Z0-9]{48}|xox[bpoas]-[a-zA-Z0-9-]+|eyJ[a-zA-Z0-9_-]*\\.[a-zA-Z0-9_-]*\\.[a-zA-Z0-9_-]*'; then echo 'BLOCK: Hardcoded secret/token detected. Use environment variables.'; exit 2; fi; fi"
+          }
+        ],
+        "description": "ECC: Block hardcoded secrets (AWS keys, GitHub tokens, API keys, JWTs)"
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|Create",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '[AgentShield] File modified. Run: npx ecc-agentshield scan'"
+          }
+        ],
+        "description": "ECC: Remind to run AgentShield scan after file modifications"
+      }
+    ]
+  },
+  "enabledPlugins": {
+    "superpowers@claude-plugins-official": true
+  }
+}

@@ -1,0 +1,36 @@
+# VSAF v3 — Generated artifacts and dependencies
+
+# Graphify output (regenerated per machine)
+graphify-out/
+
+# Node
+node_modules/
+package-lock.json
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# claude-mem local data
+.claude-mem/
+
+# ECC temporary clone
+/tmp/ecc/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+*.swp
+*.swo
+*~
+
+# Env files (secrets)
+.env
+.env.*
+!.env.example
+.gitnexus
