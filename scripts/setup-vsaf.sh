@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# setup-vsaf.sh — VSAF v3 Agentic AI SDLC Framework setup
+# setup-vsaf.sh — VSAF - SDLC Agentic Framework setup
 # Installs and configures: BMAD, OpenSpec, ECC (cherry-pick), GitNexus,
 # Graphify, claude-mem, MemPalace, Superpowers (manual step).
 # Idempotent. Ubuntu 24 / macOS supported.
@@ -426,7 +426,7 @@ verify_install() {
 main() {
     echo ""
     echo "============================================================"
-    echo "  VSAF v3 — Agentic AI SDLC Framework Setup"
+    echo "  VSAF — SDLC Agentic Framework Setup"
     echo "  Spec-driven development | 3-layer review | 8 tools"
     echo "============================================================"
     echo ""
