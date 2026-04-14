@@ -30,6 +30,60 @@
           }
         ]
       }
+    ],
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cd \"$PROJECT_DIR\" # [REMOVED: error suppression] || exit 0; ISSUES=''; SECRETS=$(git diff --cached --diff-filter=ACM --name-only # [REMOVED: error suppression] | xargs grep -lE 'AKIA[0-9A-Z]{16}|ghp_[a-zA-Z0-9]{36}|sk-[a-zA-Z0-9]{48}|xox[bpoas]-|BEGIN.*PRIVATE' # [REMOVED: error suppression]); if [ -n \"$SECRETS\" ]; then ISSUES=\"${ISSUES}WARNING: Possible secrets staged: ${SECRETS} \"; fi; LOGS=$(git diff --cached --name-only # [REMOVED: error suppression] | xargs grep -lE 'console[.]log|debugger' # [REMOVED: error suppression]); if [ -n \"$LOGS\" ]; then ISSUES=\"${ISSUES}WARNING: Debug artifacts in staged files: ${LOGS} \"; fi; if [ -n \"$ISSUES\" ]; then echo \"$ISSUES\"; fi"
+          }
+        ]
+      }
+    ]
+  },
+  "permissions": {
+    "allow": [
+      "Read",
+      "Edit",
+      "MultiEdit",
+      "Write",
+      "Bash(cat:*)",
+      "Bash(ls:*)",
+      "Bash(find:*)",
+      "Bash(grep:*)",
+      "Bash(rg:*)",
+      "Bash(head:*)",
+      "Bash(tail:*)",
+      "Bash(wc:*)",
+      "Bash(git status:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git branch:*)",
+      "Bash(git show:*)",
+      "Bash(npm test:*)",
+      "Bash(npm run:*)",
+      "Bash(npx:*)",
+      "Bash(make:*)",
+      "Bash(python:*)",
+      "Bash(node:*)"
+    ],
+    "deny": [
+      "Bash(rm -rf:*)",
+      "Bash(rm -r /:*)",
+      "Bash(git push --force:*)",
+      "Bash(git push -f:*)",
+      "Bash(git reset --hard:*)",
+      "Bash(git clean -fd:*)",
+      "Bash(chmod 777:*)",
+      "Bash(curl * | bash:*)",
+      "Bash(wget * | bash:*)",
+      "Bash(eval:*)",
+      "Bash(DROP TABLE:*)",
+      "Bash(DROP DATABASE:*)",
+      "Bash(mkfs:*)",
+      "Bash(dd if=:*)"
     ]
   },
   "enabledPlugins": {
