@@ -37,7 +37,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "cd \"$PROJECT_DIR\" # [REMOVED: error suppression] || exit 0; ISSUES=''; SECRETS=$(git diff --cached --diff-filter=ACM --name-only # [REMOVED: error suppression] | xargs grep -lE 'AKIA[0-9A-Z]{16}|ghp_[a-zA-Z0-9]{36}|sk-[a-zA-Z0-9]{48}|xox[bpoas]-|BEGIN.*PRIVATE' # [REMOVED: error suppression]); if [ -n \"$SECRETS\" ]; then ISSUES=\"${ISSUES}WARNING: Possible secrets staged: ${SECRETS} \"; fi; LOGS=$(git diff --cached --name-only # [REMOVED: error suppression] | xargs grep -lE 'console[.]log|debugger' # [REMOVED: error suppression]); if [ -n \"$LOGS\" ]; then ISSUES=\"${ISSUES}WARNING: Debug artifacts in staged files: ${LOGS} \"; fi; if [ -n \"$ISSUES\" ]; then echo \"$ISSUES\"; fi"
+            "command": "bash scripts/session-end-check.sh"
           }
         ]
       }
@@ -48,7 +48,6 @@
       "Read",
       "Edit",
       "MultiEdit",
-      "Write",
       "Bash(cat:*)",
       "Bash(ls:*)",
       "Bash(find:*)",
@@ -83,7 +82,11 @@
       "Bash(DROP TABLE:*)",
       "Bash(DROP DATABASE:*)",
       "Bash(mkfs:*)",
-      "Bash(dd if=:*)"
+      "Bash(dd if=:*)",
+      "Bash(sudo:*)",
+      "Bash(ssh :*)",
+      "Bash(ssh -:*)",
+      "Bash(> /dev/:*)"
     ]
   },
   "enabledPlugins": {
