@@ -272,16 +272,26 @@ install_ecc_cherrypick() {
     fi
 
     # -- Copy language skills --
+    # Skills live at the top level of ECC's skills/ dir. Directory names match
+    # each skill's `name:` frontmatter so Claude resolves them consistently.
     mkdir -p "$CLAUDE_HOME/skills"
-    for lang in go rust python; do
-        local SRC="$ECC_DIR/skills/coding-standards/$lang"
-        local DST="$CLAUDE_HOME/skills/$lang"
+    local ECC_SKILLS=(
+        "golang-patterns"
+        "rust-patterns"
+        "python-patterns"
+        "java-coding-standards"
+        "nestjs-patterns"
+        "nextjs-turbopack"
+    )
+    for skill in "${ECC_SKILLS[@]}"; do
+        local SRC="$ECC_DIR/skills/$skill"
+        local DST="$CLAUDE_HOME/skills/$skill"
         if [ -d "$SRC" ]; then
             if [ -d "$DST" ]; then
-                ok "Skill: $lang already installed"
+                ok "Skill: $skill already installed"
             else
                 cp -r "$SRC" "$DST"
-                ok "Skill: $lang installed"
+                ok "Skill: $skill installed"
             fi
         else
             warn "Skill source not found: $SRC"
