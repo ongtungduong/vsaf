@@ -1,10 +1,5 @@
 wing: vsaf
 rooms:
-- name: openspec
-  description: Files from openspec/
-  keywords:
-  - openspec
-  - openspec
 - name: documentation
   description: Files from docs/
   keywords:
@@ -20,6 +15,11 @@ rooms:
   keywords:
   - githooks
   - githooks
+- name: openspec
+  description: Files from openspec/
+  keywords:
+  - openspec
+  - openspec
 - name: planning
   description: Files from specs/
   keywords:

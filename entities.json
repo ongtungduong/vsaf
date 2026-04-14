@@ -1,13 +1,17 @@
 {
-  "people": [],
+  "people": [
+    "User"
+  ],
   "projects": [
     "Archive",
-    "Continue",
-    "Superpowers",
     "Sync",
+    "Superpowers",
+    "Continue",
     "Auto",
     "Graphify",
     "Schema",
-    "Claude"
+    "Claude",
+    "Spec",
+    "Change"
   ]
 }
