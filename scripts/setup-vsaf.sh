@@ -423,7 +423,7 @@ verify_install() {
     }
 
     verify_cmd "gitnexus status"                    "GitNexus indexed"
-    verify_cmd "ls graphify-out/ 2>/dev/null"       "Graphify output directory exists"
+    verify_cmd "command -v graphify"                "Graphify binary available"
     verify_cmd "command -v mempalace"               "MemPalace binary available"
     verify_cmd "command -v openspec"                "OpenSpec binary available"
     verify_cmd "npx ecc-agentshield --version"      "AgentShield available"
