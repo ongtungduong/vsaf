@@ -2,7 +2,7 @@
 # Day-to-day operations via Make targets.
 # Run `make help` for available commands.
 
-.PHONY: help setup index scan scan-deep verify review archive status mine clean
+.PHONY: help setup index scan scan-deep verify review archive status clean
 
 SHELL := /bin/bash
 
@@ -17,12 +17,9 @@ setup: ## Run full ASF setup (install all tools)
 
 # ── Knowledge Graph ────────────────────────────────────────────────────────────
 
-index: ## Re-index codebase (GitNexus + Graphify)
+index: ## Re-index codebase (GitNexus)
 	@echo "==> Re-indexing codebase..."
 	gitnexus analyze
-	@if command -v graphify &>/dev/null; then \
-		graphify . --update 2>/dev/null || echo "[WARN] graphify update failed — run '/graphify . --update' in Claude Code"; \
-	fi
 	@echo "==> Index complete"
 
 # ── Security ───────────────────────────────────────────────────────────────────
@@ -57,28 +54,14 @@ archive: ## Archive specs + re-index (post-merge)
 	$(MAKE) index
 	@echo "==> Archived and re-indexed"
 
-# ── Memory ─────────────────────────────────────────────────────────────────────
-
-mine: ## Mine conversations into MemPalace knowledge base
-	mempalace mine ~/chats/ --mode convos --extract general
-
 # ── Status ─────────────────────────────────────────────────────────────────────
 
 status: ## Show status of all tools
 	@echo "==> GitNexus"
 	@gitnexus status 2>/dev/null || echo "    [not indexed]"
 	@echo ""
-	@echo "==> MemPalace"
-	@mempalace status 2>/dev/null || echo "    [not initialized]"
-	@echo ""
 	@echo "==> OpenSpec"
 	@openspec list 2>/dev/null || echo "    [no active changes]"
-	@echo ""
-	@echo "==> Graphify output"
-	@ls graphify-out/ 2>/dev/null || echo "    [no output — run '/graphify .' in Claude Code]"
-	@echo ""
-	@echo "==> claude-mem"
-	@curl -sf http://localhost:37777 >/dev/null 2>&1 && echo "    Web viewer: http://localhost:37777" || echo "    [web viewer not running]"
 
 # ── Maintenance ────────────────────────────────────────────────────────────────
 
