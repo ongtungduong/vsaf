@@ -83,6 +83,79 @@ Every feature follows a **5-step cycle**: spec → impact analysis → brainstor
 
 See `CLAUDE.md` for the full workflow rules and quick-reference command table.
 
+## Example: Building a New Feature
+
+**Scenario:** Thêm tính năng "export báo cáo ra PDF".
+
+---
+
+**Step 1 — Spec** · *Bạn làm*
+
+```
+/opsx:propose export báo cáo ra PDF
+```
+
+> AI tạo spec file với danh sách tasks, edge cases, acceptance criteria. Bạn review và approve.
+
+---
+
+**Step 2 — Impact Analysis** · *AI làm tự động*
+
+AI chạy GitNexus để tìm các module bị ảnh hưởng:
+
+```
+gitnexus_impact({target: "ReportService", direction: "upstream"})
+```
+
+> AI báo cáo: "3 module phụ thuộc vào ReportService. Recommend tách thành 2 PR."
+> Bạn quyết định: tách PR hay giữ nguyên.
+
+---
+
+**Step 3 — Brainstorm + Plan** · *AI dẫn dắt, bạn approve*
+
+```
+/superpowers:brainstorm
+```
+
+> AI đề xuất 3 approach (wkhtmltopdf / Puppeteer / server-side LaTeX), phân tích trade-off, recommend Puppeteer.
+> Bạn chọn approach → AI tạo implementation plan với từng task 2–5 phút.
+> Bạn review plan, approve.
+
+---
+
+**Step 4 — Execute** · *AI làm, bạn theo dõi*
+
+```
+/superpowers:execute-plan
+```
+
+> AI code từng task theo TDD (viết test trước, implement sau), commit sau mỗi task.
+> Nếu task fail 3 lần, AI dừng lại và báo cáo để bạn quyết định hướng đi.
+
+---
+
+**Step 5 — Review + Ship** · *AI làm, bạn approve merge*
+
+```
+/superpowers:code-review   # AI review methodology
+make verify                # OpenSpec kiểm tra spec compliance
+make scan                  # AgentShield quét bảo mật
+git push origin feature/export-pdf
+```
+
+> Bạn review PR, merge.
+
+---
+
+| Bước | Con người | AI |
+|---|---|---|
+| Spec | Mô tả feature, approve spec | Tạo spec, edge cases |
+| Impact | Quyết định có split PR không | Chạy blast radius analysis |
+| Brainstorm | Trả lời câu hỏi, chọn approach, approve plan | Đề xuất options, tạo plan |
+| Execute | Theo dõi, unblock nếu AI stuck | Code, test, commit từng task |
+| Review | Review PR, approve merge | Chạy 3-layer review, scan bảo mật |
+
 ---
 
 **Core principles:** Spec before code. Context is king. 3-layer review before every PR.
