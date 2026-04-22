@@ -53,6 +53,25 @@ teardown() {
     [ -x "$TARGET/githooks/pre-push" ]
 }
 
+@test "setup.sh excludes setup.sh itself from target's scripts/" {
+    bash "$ROOT/scripts/setup.sh" "$TARGET"
+
+    [ ! -f "$TARGET/scripts/setup.sh" ]
+    [ -f "$TARGET/scripts/sync-platforms.sh" ]
+}
+
+@test "setup.sh substitutes {{REPO_NAME}} in CLAUDE.md with target basename" {
+    bash "$ROOT/scripts/setup.sh" "$TARGET"
+
+    NAME="$(basename "$TARGET")"
+    # Token must be replaced; no raw {{REPO_NAME}} left behind.
+    run grep -F "{{REPO_NAME}}" "$TARGET/CLAUDE.md"
+    [ "$status" -ne 0 ]
+    # Substituted value must appear in gitnexus:// URI.
+    run grep -F "gitnexus://repo/$NAME/" "$TARGET/CLAUDE.md"
+    [ "$status" -eq 0 ]
+}
+
 @test "setup.sh overwrites CLAUDE.md even if present" {
     echo "old content" > "$TARGET/CLAUDE.md"
     bash "$ROOT/scripts/setup.sh" "$TARGET"

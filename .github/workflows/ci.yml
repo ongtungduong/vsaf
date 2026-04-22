@@ -40,7 +40,7 @@ jobs:
             scripts/sync-platforms.sh \
             scripts/session-end-check.sh \
             scripts/hooks/gitleaks-precheck.sh \
-            githooks/pre-push
+            template/githooks/pre-push
 
   bats-tests:
     name: Bats tests

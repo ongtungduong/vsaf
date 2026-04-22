@@ -8,8 +8,11 @@ setup() {
     ROOT="$(cd "$BATS_TEST_DIRNAME/.." && pwd)"
     WORK=$(mktemp -d)
 
-    cp -R "$ROOT/workflows"  "$WORK/workflows"
-    cp -R "$ROOT/scripts"    "$WORK/scripts"
+    # Simulate a TARGET-style layout (post-install): workflows/ at the repo root,
+    # outputs at .claude/, .agent/, .github/ (without the template/ prefix).
+    # This exercises the target-mode branch of sync-platforms.sh.
+    cp -R "$ROOT/template/workflows"  "$WORK/workflows"
+    cp -R "$ROOT/scripts"             "$WORK/scripts"
     mkdir -p \
         "$WORK/.claude/commands/opsx" \
         "$WORK/.claude/skills" \

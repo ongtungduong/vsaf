@@ -24,7 +24,18 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT"
 
-SRC_DIR="workflows"
+# Context detection:
+#   - Kit repo (ask-ranger dev): canonical source lives at template/workflows/
+#     and generated outputs go under template/.claude, template/.agent, template/.github.
+#   - Target repo (after setup.sh installed): canonical source lives at workflows/
+#     and generated outputs go at .claude/, .agent/, .github/ (repo root).
+if [ -d "template/workflows" ]; then
+    SRC_DIR="template/workflows"
+    OUT_PREFIX="template/"
+else
+    SRC_DIR="workflows"
+    OUT_PREFIX=""
+fi
 
 # Marker inserted after the closing frontmatter `---` so skill loaders do not
 # mistake it for the description field.
@@ -90,18 +101,18 @@ skill_description() {
 # Clean out old generated files to prevent stale entries surviving a rename.
 # ──────────────────────────────────────────────────────────────────────────────
 rm -rf \
-    .claude/skills/openspec-* \
-    .agent/skills/openspec-* \
-    .github/skills/openspec-*
+    "${OUT_PREFIX}.claude/skills/openspec-"* \
+    "${OUT_PREFIX}.agent/skills/openspec-"* \
+    "${OUT_PREFIX}.github/skills/openspec-"*
 rm -f \
-    .agent/workflows/opsx-*.md \
-    .github/prompts/opsx-*.prompt.md \
-    .claude/commands/opsx/*.md
+    "${OUT_PREFIX}.agent/workflows/opsx-"*.md \
+    "${OUT_PREFIX}.github/prompts/opsx-"*.prompt.md \
+    "${OUT_PREFIX}.claude/commands/opsx/"*.md
 
 mkdir -p \
-    .claude/commands/opsx \
-    .agent/workflows \
-    .github/prompts
+    "${OUT_PREFIX}.claude/commands/opsx" \
+    "${OUT_PREFIX}.agent/workflows" \
+    "${OUT_PREFIX}.github/prompts"
 
 # ──────────────────────────────────────────────────────────────────────────────
 # Regenerate
@@ -120,13 +131,13 @@ for entry in "${MAPPINGS[@]}"; do
     body="$(strip_frontmatter "$src")"
 
     # 1. Skill locations — canonical content with marker inserted after frontmatter
-    for target in ".claude/skills/$skill_name" ".agent/skills/$skill_name" ".github/skills/$skill_name"; do
+    for target in "${OUT_PREFIX}.claude/skills/$skill_name" "${OUT_PREFIX}.agent/skills/$skill_name" "${OUT_PREFIX}.github/skills/$skill_name"; do
         mkdir -p "$target"
         insert_marker_after_frontmatter "$src" "$marker" > "$target/SKILL.md"
     done
 
     # 2. Workflow-format files — minimal frontmatter + body
-    for target in ".agent/workflows/opsx-$short.md" ".github/prompts/opsx-$short.prompt.md"; do
+    for target in "${OUT_PREFIX}.agent/workflows/opsx-$short.md" "${OUT_PREFIX}.github/prompts/opsx-$short.prompt.md"; do
         {
             echo "---"
             echo "description: $description"
@@ -146,7 +157,7 @@ for entry in "${MAPPINGS[@]}"; do
         echo "---"
         echo "$marker"
         printf '%s' "$body"
-    } > ".claude/commands/opsx/$short.md"
+    } > "${OUT_PREFIX}.claude/commands/opsx/$short.md"
 
     echo "[OK] regenerated $skill_name (/opsx:$short)"
 done

@@ -1,6 +1,3 @@
-# ask-ranger kit — development-time ignore list
-# (The fragment appended to target repos lives at template/.gitignore.append)
-
 # Node
 node_modules/
 package-lock.json
@@ -19,7 +16,7 @@ Thumbs.db
 .env.*
 !.env.example
 
-# GitNexus index (local state)
+# GitNexus index
 .gitnexus/
 
 # Git worktrees
