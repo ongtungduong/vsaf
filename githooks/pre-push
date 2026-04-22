@@ -3,7 +3,7 @@ set -euo pipefail
 
 echo "==> Pre-push: Running verification checks..."
 
-make verify || { echo "BLOCKED: 'make verify' failed."; exit 1; }
+make check-artifacts || { echo "BLOCKED: 'make check-artifacts' failed."; exit 1; }
 make scan   || { echo "BLOCKED: 'make scan' failed."; exit 1; }
 
 echo "==> Pre-push checks passed."
