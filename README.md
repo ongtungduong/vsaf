@@ -37,6 +37,36 @@ One manual post-setup step (requires an interactive Claude Code session):
 
 Restart Claude Code after installing Superpowers.
 
+## Onboarding an Existing Repo
+
+To apply ASF to a repo you already have, clone ASF and run one command:
+
+```bash
+git clone <this-repo> agentic-sdlc-framework
+make -C agentic-sdlc-framework onboard TARGET=/path/to/your-repo
+```
+
+The script copies these files into your repo:
+
+| File / Directory | Behavior |
+|---|---|
+| `CLAUDE.md` | Always overwritten (ASF system prompt) |
+| `AGENTS.md` | Always overwritten (ASF agent rules) |
+| `Makefile` | Copied only if not present |
+| `githooks/` | Copied only if not present |
+| `.claude/` | Copied only if not present |
+| `.github/` | Copied only if not present |
+| `.agent/` | Copied only if not present |
+| `.gitignore` | ASF entries appended (idempotent — safe to re-run) |
+
+After the script finishes, complete one manual step inside Claude Code:
+
+```
+/plugin install superpowers@claude-plugins-official
+```
+
+Restart Claude Code after installing Superpowers.
+
 ## Directory Layout
 
 ```

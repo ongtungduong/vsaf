@@ -2,7 +2,7 @@
 # Day-to-day operations via Make targets.
 # Run `make help` for available commands.
 
-.PHONY: help setup index scan scan-deep verify review archive status clean
+.PHONY: help setup onboard index scan scan-deep verify review archive status clean
 
 SHELL := /bin/bash
 
@@ -14,6 +14,13 @@ help: ## Show this help
 
 setup: ## Run full ASF setup (install all tools)
 	@bash scripts/setup-asf.sh
+
+onboard: ## Onboard an existing repo: make onboard TARGET=/path/to/repo
+	@if [ -z "$(TARGET)" ]; then \
+		echo "Usage: make onboard TARGET=/path/to/repo"; \
+	else \
+		bash scripts/onboard-repo.sh $(TARGET); \
+	fi
 
 # ── Knowledge Graph ────────────────────────────────────────────────────────────
 
